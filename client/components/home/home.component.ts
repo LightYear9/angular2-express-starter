@@ -16,7 +16,9 @@ export class HomeComponent {
 		password: "angualr2express",
 		username: "john"
 	};
+
 	constructor(public http: Http) {}
+
 	signup() {
 
 		this.http.post("/login/signup", JSON.stringify({ password: this.user.password, username: this.user.username }), new RequestOptions({
@@ -32,6 +34,7 @@ export class HomeComponent {
 				}
 			);
 	}
+
 	call() {
 
 		this.error = undefined;
@@ -50,6 +53,7 @@ export class HomeComponent {
 				}
 			);
 	}
+
 	login() {
 		this.http.post("/login", JSON.stringify({ password: this.user.password }), new RequestOptions({
 			headers: new Headers({"Content-Type": "application/json"})
@@ -70,6 +74,7 @@ export class HomeComponent {
 				}
 			);
 	}
+	
 	remove() {
 		this.error = { message: "JWT removed" };
 		this.data = undefined;

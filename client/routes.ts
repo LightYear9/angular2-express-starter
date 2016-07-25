@@ -4,10 +4,12 @@ import { Type } from '@angular/core';
 
 import { HomeComponent } from './components/home/home.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { FirebaseComponent } from "./components/firebase/firebase.component";
 
 const routes: RouterConfig = [
     { path: '', component: <Type>HomeComponent },
-    { path: 'contact', component: <Type>ContactComponent }
+    { path: 'contact', component: <Type>ContactComponent },
+    { path: 'firebase', component: <Type>FirebaseComponent }
 ];
 
 export const APP_ROUTER_PROVIDERS = [

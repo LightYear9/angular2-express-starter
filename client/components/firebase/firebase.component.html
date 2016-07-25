@@ -1,0 +1,25 @@
+<sm-select [control]="select" placeholder="Select bucket" class="fluid search" (onChange)="onChangeSelect($event)">
+    <option *ngFor="let key of keys">{{key}}</option>
+</sm-select>
+
+<sm-segment>
+    <sm-loader class="inverted" *ngIf="!(items | async)"></sm-loader>
+    <sm-list class="ui list bulleted">
+        <sm-item *ngFor="let item of items | async">{{item.$value}}</sm-item>
+    </sm-list>
+</sm-segment>
+
+<h2 class="ui header dividing">Insert into Firebase</h2>
+<sm-segment>
+    <form class="ui form" [formGroup]="form" #formEl>
+        <div class="field">
+            <sm-input [control]="form.controls.bucket" label="Bucket"></sm-input>
+        </div>
+        <div class="field">
+            <sm-input [control]="form.controls.value" label="Value"></sm-input>
+        </div>
+        <div class="field">
+            <sm-button class="primary" (click)="insert()">Submit</sm-button>
+        </div>
+    </form>
+</sm-segment>

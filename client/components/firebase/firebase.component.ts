@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from "@angular/core";
-import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
+import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES, SemanticModalComponent } from "ng-semantic";
 import { AngularFire, FirebaseListObservable } from 'angularfire2';
 import { FormGroup, FormBuilder, Validators, REACTIVE_FORM_DIRECTIVES, FormControl } from "@angular/forms";
 
@@ -11,9 +11,14 @@ import { FormGroup, FormBuilder, Validators, REACTIVE_FORM_DIRECTIVES, FormContr
 export class FirebaseComponent {
     items: FirebaseListObservable<any[]>;
     form: FormGroup;
-    select: FormControl = new FormControl();
+    selectControl: FormControl = new FormControl();
+    valueControl: FormControl = new FormControl();
     keys: string[] = [];
     @ViewChild("formEl") formEl: ElementRef;
+    @ViewChild("modalEl") modalEl: SemanticModalComponent;
+
+    selectedBucket: string;
+    selectedItem: { $key: string };
 
     constructor(public af: AngularFire, fb: FormBuilder) {
         this.items = af.database.list('items');
@@ -29,12 +34,28 @@ export class FirebaseComponent {
 
     insert() {
         if (this.form.valid) {
-            this.af.database.list(this.form.controls['bucket'].value).push(this.form.controls['value'].value);
+            this.af.database.list(this.form.controls['bucket'].value).push({
+                "value": this.form.controls['value'].value
+            });
             this.formEl.nativeElement.reset();
         }
     }
 
     onChangeSelect(data: string) {
+        this.selectedBucket = data;
         this.items = this.af.database.list(data);
+    }
+
+    edit(object: { value: string, $key: string }) {
+        this.selectedItem = object;
+        this.valueControl.updateValue(object.value);
+        this.modalEl.show();
+    }
+
+    changeValue() {
+        this.items.update(this.selectedItem.$key, {
+            "value": this.valueControl.value
+        });
+        this.modalEl.hide();
     }
 }

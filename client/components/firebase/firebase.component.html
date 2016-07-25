@@ -1,11 +1,13 @@
-<sm-select [control]="select" placeholder="Select bucket" class="fluid search" (onChange)="onChangeSelect($event)">
-    <option *ngFor="let key of keys">{{key}}</option>
-</sm-select>
-
 <sm-segment>
+
     <sm-loader class="inverted" *ngIf="!(items | async)"></sm-loader>
+
+    <sm-select [control]="selectControl" placeholder="Select bucket" class="fluid search" (onChange)="onChangeSelect($event)">
+        <option *ngFor="let key of keys">{{key}}</option>
+    </sm-select>
+
     <sm-list class="ui list bulleted">
-        <sm-item *ngFor="let item of items | async">{{item.$value}}</sm-item>
+        <sm-item *ngFor="let item of items | async">{{item.value}} | <a (click)="edit(item)">Edit</a></sm-item>
     </sm-list>
 </sm-segment>
 
@@ -23,3 +25,12 @@
         </div>
     </form>
 </sm-segment>
+
+<sm-modal #modalEl title="Edit">
+    <modal-content>
+        <sm-input [control]="valueControl" class="ui input fluid" placeholder="Your value"></sm-input>
+    </modal-content>
+    <modal-actions>
+        <sm-button (click)="changeValue()" class="primary">Change value</sm-button>
+    </modal-actions>
+</sm-modal>
